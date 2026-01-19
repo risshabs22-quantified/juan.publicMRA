@@ -1,0 +1,9 @@
+{
+    "email": "YOUR_EMAIL@outlook.com",
+    "password": "YOUR_PASSWORD",
+    "headless": false,
+    "pc_searches": 34,
+    "mobile_searches": 24,
+    "min_delay": 3,
+    "max_delay": 8
+}
