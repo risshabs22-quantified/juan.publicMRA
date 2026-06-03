@@ -1,21 +1,3 @@
-"""
-Microsoft Rewards Automation Bot
-================================
-
-Automates Microsoft Rewards tasks including:
-- Bing searches (PC and Mobile)
-- Daily set activities
-- More activities
-- Punch cards
-- Quizzes, polls, and more
-
-Usage:
-1. Copy config.example.json to config.json
-2. Edit config.json with your Microsoft account credentials
-3. Run: python main.py
-
-WARNING: Use at your own risk. May violate Microsoft ToS.
-"""
 
 import json
 import sys
@@ -44,7 +26,6 @@ def load_config() -> dict:
     with open(config_path, "r") as f:
         config = json.load(f)
         
-    # Validate required fields
     if config.get("email") == "YOUR_EMAIL@outlook.com":
         logger.error("Please update config.json with your actual email!")
         sys.exit(1)
@@ -60,7 +41,7 @@ def run_bot():
     """Main bot execution."""
     print_banner()
     
-    # Load configuration
+    
     logger.info("Loading configuration...")
     config = load_config()
     
@@ -80,7 +61,7 @@ def run_bot():
     total_points_before = 0
     total_points_after = 0
     
-    # ===== DESKTOP BROWSER SESSION =====
+   
     logger.info("\n" + "="*50)
     logger.info("STARTING DESKTOP SESSION")
     logger.info("="*50)
@@ -89,40 +70,27 @@ def run_bot():
         with Browser(headless=headless, mobile=False) as browser:
             driver = browser.driver
             
-            # Login
+            
             auth = Auth(driver)
             if not auth.login(email, password):
                 logger.error("Login failed! Please check your credentials.")
                 return
             
             random_delay(2, 3)
-            
-            # Get initial points
             rewards = RewardsAutomation(driver)
             total_points_before = rewards.get_current_points()
             logger.info(f"Current points: {total_points_before:,}")
-            
-            # Perform PC searches
+        
             search = SearchAutomation(driver, min_delay, max_delay)
             search.perform_searches(pc_searches, "PC")
-            
-            # Complete daily set
             rewards.complete_daily_set()
-            
-            # Complete more activities
             rewards.complete_more_activities()
-            
-            # Complete punch cards
             rewards.complete_punch_cards()
-            
-            # Get points after desktop session
             random_delay(2, 3)
             total_points_after = rewards.get_current_points()
             
     except Exception as e:
         logger.error(f"Desktop session error: {e}")
-    
-    # ===== MOBILE BROWSER SESSION =====
     logger.info("\n" + "="*50)
     logger.info("STARTING MOBILE SESSION")
     logger.info("="*50)
@@ -130,25 +98,20 @@ def run_bot():
     try:
         with Browser(headless=headless, mobile=True) as browser:
             driver = browser.driver
-            
-            # Login again for mobile session
             auth = Auth(driver)
             if not auth.login(email, password):
                 logger.error("Mobile login failed!")
             else:
-                # Perform mobile searches
                 search = SearchAutomation(driver, min_delay, max_delay)
                 search.perform_searches(mobile_searches, "Mobile")
-                
-                # Get final points
+
                 rewards = RewardsAutomation(driver)
                 random_delay(2, 3)
                 total_points_after = rewards.get_current_points()
                 
     except Exception as e:
         logger.error(f"Mobile session error: {e}")
-    
-    # ===== SUMMARY =====
+
     logger.info("\n" + "="*50)
     logger.info("SESSION SUMMARY")
     logger.info("="*50)
