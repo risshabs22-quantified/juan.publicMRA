@@ -38,7 +38,7 @@ def load_config() -> dict:
 
 
 def run_bot():
-    """Main bot execution."""
+    """main bot execution."""
     print_banner()
     
     
@@ -113,20 +113,20 @@ def run_bot():
         logger.error(f"Mobile session error: {e}")
 
     logger.info("\n" + "="*50)
-    logger.info("SESSION SUMMARY")
+    logger.info("summary of session")
     logger.info("="*50)
     logger.info(f"   Points before: {total_points_before:,}")
     logger.info(f"   Points after:  {total_points_after:,}")
     logger.info(f"   Points earned: {total_points_after - total_points_before:,}")
     logger.info("="*50)
-    logger.info("Bot completed! Thanks for using Microsoft Rewards Bot.")
+    logger.info("bot completed! preesh for using Microsoft Rewards Bot.")
 
 
 if __name__ == "__main__":
     try:
         run_bot()
     except KeyboardInterrupt:
-        logger.info("\nBot stopped by user")
+        logger.info("\nbot stopped by user")
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"unexp error: {e}")
         raise
