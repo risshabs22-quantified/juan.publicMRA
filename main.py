@@ -18,20 +18,20 @@ def load_config() -> dict:
     if not config_path.exists():
         if example_config_path.exists():
             logger.error("config.json not found!")
-            logger.error("Please copy config.example.json to config.json and add your credentials.")
+            logger.error("copy config.example.json to config.json and add your credentials.")
         else:
-            logger.error("config.json not found! Please create it with your credentials.")
+            logger.error("config.json not found.")
         sys.exit(1)
         
     with open(config_path, "r") as f:
         config = json.load(f)
         
     if config.get("email") == "YOUR_EMAIL@outlook.com":
-        logger.error("Please update config.json with your actual email!")
+        logger.error("update config.json with your actual email!")
         sys.exit(1)
         
     if config.get("password") == "YOUR_PASSWORD":
-        logger.error("Please update config.json with your actual password!")
+        logger.error("pdate config.json with your actual password!")
         sys.exit(1)
         
     return config
@@ -42,7 +42,7 @@ def run_bot():
     print_banner()
     
     
-    logger.info("Loading configuration...")
+    logger.info("Loading configuration")
     config = load_config()
     
     email = config["email"]
